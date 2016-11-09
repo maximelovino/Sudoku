@@ -10,6 +10,7 @@ public class Solver {
 		try {
 			Sudoku game = new Sudoku("data/sudoku.txt");
 			System.out.println(game);
+			System.out.println("Empty cases: "+game.getEmptyCases());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

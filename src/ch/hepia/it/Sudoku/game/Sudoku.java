@@ -6,7 +6,9 @@ import java.io.LineNumberReader;
 
 public class Sudoku {
 	private final int SIZE = 9;
-	private int[][] board = new int[9][9];
+	private int[][] board = new int[SIZE][SIZE];
+	private int emptyCases = (int) Math.pow(SIZE,2);
+	private Domain[][] domains = new Domain[SIZE][SIZE];
 
 
 	public Sudoku () {
@@ -18,7 +20,6 @@ public class Sudoku {
 	}
 
 	public Sudoku (String filepath) throws IOException {
-
 		//TODO add exception if file is not well done
 		LineNumberReader reader = new LineNumberReader(new FileReader(filepath));
 
@@ -29,6 +30,10 @@ public class Sudoku {
 
 			for (int i = 0; i < strArray.length; i++) {
 				this.board[lineCnt][i] = strArray[i].equals("-") ? 0 : Integer.valueOf(strArray[i]);
+				this.domains[lineCnt][i] = new Domain();
+				if (this.board[lineCnt][i]!=0)
+					emptyCases--;
+					//TODO call function domainPropagation(int line, int col)
 			}
 			lineCnt++;
 		}
@@ -50,6 +55,14 @@ public class Sudoku {
 
 	private boolean subArrayCheck(int line, int column){
 		return false;
+	}
+
+	public int getEmptyCases () {
+		return emptyCases;
+	}
+
+	public boolean isFull(){
+		return emptyCases == 0;
 	}
 
 	@Override
