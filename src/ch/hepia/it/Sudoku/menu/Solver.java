@@ -15,6 +15,11 @@ public class Solver {
 			Position constrained = game.getMostConstrainedCase();
 			System.out.println(constrained);
 			System.out.println(game.getDomainOfCase(constrained.getLine(),constrained.getColumn()));
+			game.fillCase(5,1,1);
+			System.out.println(game);
+			constrained = game.getMostConstrainedCase();
+			System.out.println(constrained);
+			System.out.println(game.getDomainOfCase(constrained.getLine(),constrained.getColumn()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
