@@ -3,36 +3,36 @@ package ch.hepia.it.Sudoku.game;
 import java.util.HashSet;
 
 public class Domain {
-	HashSet<Integer> values;
+	private HashSet<Integer> values;
 
-	public Domain(){
+	public Domain () {
 		this.values = new HashSet<>();
 		initDomain();
 	}
 
-	public Domain(Domain domain){
+	public Domain (Domain domain) {
 		this.values = new HashSet<>(domain.getValues());
 	}
 
 	private void initDomain () {
 		for (int i = 0; i < 9; i++) {
-			values.add(i+1);
+			values.add(i + 1);
 		}
 	}
 
-	public void remove(Integer x){
+	public void remove (Integer x) {
 		this.values.remove(x);
 	}
 
-	public void clearAll(){
+	public void clearAll () {
 		this.values.clear();
 	}
 
-	public boolean contains(Integer x){
+	public boolean contains (Integer x) {
 		return this.values.contains(x);
 	}
 
-	public int size(){
+	public int size () {
 		return this.values.size();
 	}
 

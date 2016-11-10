@@ -7,7 +7,7 @@ import java.io.LineNumberReader;
 public class Sudoku {
 	private final int SIZE = 9;
 	private int[][] board = new int[SIZE][SIZE];
-	private int emptyCases = (int) Math.pow(SIZE,2);
+	private int emptyCases = (int) Math.pow(SIZE, 2);
 	private Domain[][] domains = new Domain[SIZE][SIZE];
 
 
@@ -19,7 +19,7 @@ public class Sudoku {
 		}
 	}
 
-	public Sudoku (Sudoku sudoku){
+	public Sudoku (Sudoku sudoku) {
 		this.board = sudoku.board;
 		this.emptyCases = sudoku.emptyCases;
 		this.domains = new Domain[SIZE][SIZE];
@@ -42,14 +42,14 @@ public class Sudoku {
 
 		String line;
 		int lineCnt = 0;
-		while ((line=reader.readLine())!=null){
+		while ((line = reader.readLine()) != null) {
 			String[] strArray = line.split(" ");
 
 			for (int i = 0; i < strArray.length; i++) {
 				this.board[lineCnt][i] = strArray[i].equals("-") ? 0 : Integer.valueOf(strArray[i]);
-				if (this.board[lineCnt][i]!=0){
+				if (this.board[lineCnt][i] != 0) {
 					emptyCases--;
-					addConstraint(this.board[lineCnt][i],lineCnt,i);
+					addConstraint(this.board[lineCnt][i], lineCnt, i);
 				}
 			}
 			lineCnt++;
@@ -58,19 +58,19 @@ public class Sudoku {
 		//TODO check validity and throw exception if sudoku is not valid
 	}
 
-	public boolean isValid(){
+	public boolean isValid () {
 		return false;
 	}
 
-	private boolean lineCheck(int line){
+	private boolean lineCheck (int line) {
 		return false;
 	}
 
-	private boolean colCheck(int column){
+	private boolean colCheck (int column) {
 		return false;
 	}
 
-	private boolean subArrayCheck(int line, int column){
+	private boolean subArrayCheck (int line, int column) {
 		return false;
 	}
 
@@ -78,7 +78,7 @@ public class Sudoku {
 		return emptyCases;
 	}
 
-	public boolean isFull(){
+	public boolean isFull () {
 		return emptyCases == 0;
 	}
 
@@ -86,7 +86,7 @@ public class Sudoku {
 		domains[line][column].clearAll();
 		for (int i = 0; i < this.domains.length; i++) {
 			for (int j = 0; j < this.domains[i].length; j++) {
-				if (i == line || j == column || (i / 3 == line / 3 && j / 3 == column /3)){
+				if (i == line || j == column || (i / 3 == line / 3 && j / 3 == column / 3)) {
 					domains[i][j].remove(Integer.valueOf(value));
 				}
 			}
@@ -99,19 +99,19 @@ public class Sudoku {
 		for (int i = 0; i < this.board.length; i++) {
 			for (int j = 0; j < this.board[i].length; j++) {
 				out += this.board[i][j] == 0 ? "-" : String.valueOf(this.board[i][j]);
-				out += j%3 == 2 ? "\t" : " ";
+				out += j % 3 == 2 ? "\t" : " ";
 			}
-			out += i%3 == 2 ? "\n\n" : "\n";
+			out += i % 3 == 2 ? "\n\n" : "\n";
 		}
 		return out;
 	}
 
-	public Position getMostConstrainedCase(){
+	public Position getMostConstrainedCase () {
 		int smallest = Integer.MAX_VALUE;
-		Position boardCase = new Position(-1,-1);
+		Position boardCase = new Position(-1, -1);
 		for (int i = 0; i < this.domains.length; i++) {
 			for (int j = 0; j < this.domains[i].length; j++) {
-				if (this.domains[i][j].size() < smallest && this.domains[i][j].size() > 0){
+				if (this.domains[i][j].size() < smallest && this.domains[i][j].size() > 0) {
 					boardCase.setLine(i);
 					boardCase.setColumn(j);
 					smallest = this.domains[i][j].size();
@@ -121,14 +121,14 @@ public class Sudoku {
 		return (boardCase.getLine() == -1 && boardCase.getColumn() == -1) ? null : boardCase;
 	}
 
-	public void fillCase(int line, int column, int value){
+	public void fillCase (int line, int column, int value) {
 		//TODO check if we should return the copy here, or make the copy and call this
 		this.board[line][column] = value;
 		addConstraint(Integer.valueOf(value), line, column);
 		emptyCases--;
 	}
 
-	public Domain getDomainOfCase(int line, int column){
+	public Domain getDomainOfCase (int line, int column) {
 		return this.domains[line][column];
 	}
 }
