@@ -10,6 +10,10 @@ public class Domain {
 		initDomain();
 	}
 
+	public Domain(Domain domain){
+		this.values = new HashSet<>(domain.getValues());
+	}
+
 	private void initDomain () {
 		for (int i = 0; i < 9; i++) {
 			values.add(i+1);
@@ -18,6 +22,10 @@ public class Domain {
 
 	public void remove(Integer x){
 		this.values.remove(x);
+	}
+
+	public void clearAll(){
+		this.values.clear();
 	}
 
 	public boolean contains(Integer x){
@@ -31,5 +39,9 @@ public class Domain {
 	@Override
 	public String toString () {
 		return values.toString();
+	}
+
+	public HashSet<Integer> getValues () {
+		return values;
 	}
 }

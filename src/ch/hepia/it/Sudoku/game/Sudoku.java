@@ -19,6 +19,17 @@ public class Sudoku {
 		}
 	}
 
+	public Sudoku (Sudoku sudoku){
+		this.board = sudoku.board;
+		this.emptyCases = sudoku.emptyCases;
+		this.domains = new Domain[SIZE][SIZE];
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
+				this.domains[i][j] = new Domain(sudoku.domains[i][j]);
+			}
+		}
+	}
+
 	public Sudoku (String filepath) throws IOException {
 		//TODO add exception if file is not well done
 		LineNumberReader reader = new LineNumberReader(new FileReader(filepath));
@@ -38,6 +49,7 @@ public class Sudoku {
 				this.board[lineCnt][i] = strArray[i].equals("-") ? 0 : Integer.valueOf(strArray[i]);
 				if (this.board[lineCnt][i]!=0){
 					emptyCases--;
+					System.out.println("insertion of "+Integer.valueOf(strArray[i])+" in cell "+lineCnt+","+i);
 					addConstraint(this.board[lineCnt][i],lineCnt,i);
 				}
 			}
@@ -72,12 +84,17 @@ public class Sudoku {
 	}
 
 	public void addConstraint(int value, int line, int column){
+		domains[line][column].clearAll();
 		for (int i = 0; i < this.domains.length; i++) {
 			for (int j = 0; j < this.domains[i].length; j++) {
-				if (i == line || j == column || (i / 3 == line / 3 && j / 3 == column /3))
-					domains[i][j].remove(value);
+				if (i == line || j == column || (i / 3 == line / 3 && j / 3 == column /3)){
+					domains[i][j].remove(Integer.valueOf(value));
+					//System.out.println("removed "+value+" from cell "+i+","+j);
+					//System.out.println("new domain: "+domains[i][j]);
+				}
 			}
 		}
+		System.out.println();
 	}
 
 	@Override
@@ -95,24 +112,24 @@ public class Sudoku {
 
 	public Position getMostConstrainedCase(){
 		int smallest = Integer.MAX_VALUE;
-		Position boardCase = new Position(0,0);
+		Position boardCase = new Position(-1,-1);
 		for (int i = 0; i < this.domains.length; i++) {
 			for (int j = 0; j < this.domains[i].length; j++) {
-				if (this.domains[i][j].size() < smallest && this.board[i][j] == 0){
+				if (this.domains[i][j].size() < smallest && this.domains[i][j].size() > 0){
 					boardCase.setLine(i);
 					boardCase.setColumn(j);
 					smallest = this.domains[i][j].size();
 				}
 			}
 		}
-		return boardCase;
+		return (boardCase.getLine() == -1 && boardCase.getColumn() == -1) ? null : boardCase;
 	}
 
-	public boolean fillCase(int line, int column, int value){
+	public void fillCase(int line, int column, int value){
 		//TODO check if we should return the copy here, or make the copy and call this
 		this.board[line][column] = value;
-		addConstraint(value, line, column);
-		return isValid();
+		addConstraint(Integer.valueOf(value), line, column);
+		emptyCases--;
 	}
 
 	public Domain getDomainOfCase(int line, int column){
