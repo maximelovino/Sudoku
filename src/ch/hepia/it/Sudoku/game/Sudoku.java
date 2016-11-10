@@ -71,9 +71,9 @@ public class Sudoku {
 		for (int i = 0; i < this.board.length; i++) {
 			for (int j = 0; j < this.board[i].length; j++) {
 				out += this.board[i][j] == 0 ? "-" : String.valueOf(this.board[i][j]);
-				out += "\t";
+				out += j%3 == 2 ? "\t" : " ";
 			}
-			out += "\n";
+			out += i%3 == 2 ? "\n\n" : "\n";
 		}
 		return out;
 	}
