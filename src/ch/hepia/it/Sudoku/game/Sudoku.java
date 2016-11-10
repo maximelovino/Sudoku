@@ -49,7 +49,6 @@ public class Sudoku {
 				this.board[lineCnt][i] = strArray[i].equals("-") ? 0 : Integer.valueOf(strArray[i]);
 				if (this.board[lineCnt][i]!=0){
 					emptyCases--;
-					System.out.println("insertion of "+Integer.valueOf(strArray[i])+" in cell "+lineCnt+","+i);
 					addConstraint(this.board[lineCnt][i],lineCnt,i);
 				}
 			}
@@ -83,18 +82,15 @@ public class Sudoku {
 		return emptyCases == 0;
 	}
 
-	public void addConstraint(int value, int line, int column){
+	private void addConstraint (int value, int line, int column) {
 		domains[line][column].clearAll();
 		for (int i = 0; i < this.domains.length; i++) {
 			for (int j = 0; j < this.domains[i].length; j++) {
 				if (i == line || j == column || (i / 3 == line / 3 && j / 3 == column /3)){
 					domains[i][j].remove(Integer.valueOf(value));
-					//System.out.println("removed "+value+" from cell "+i+","+j);
-					//System.out.println("new domain: "+domains[i][j]);
 				}
 			}
 		}
-		System.out.println();
 	}
 
 	@Override

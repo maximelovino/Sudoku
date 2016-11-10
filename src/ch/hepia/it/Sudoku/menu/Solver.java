@@ -12,7 +12,7 @@ public class Solver {
 	public static void main (String[] args) {
 		try {
 			final long startTime = System.nanoTime();
-			Sudoku game = new Sudoku("data/sudoku.txt");
+			Sudoku game = new Sudoku("data/test2.txt");
 			System.out.println(game);
 			Sudoku solved = backtrackingSearch(game);
 			System.out.println(solved);
@@ -24,11 +24,7 @@ public class Solver {
 
 	}
 
-	public static Sudoku backtrackingSearch(Sudoku game){
-		System.out.println(game);
-		System.out.println();
-		System.out.println(game.getEmptyCases());
-		System.out.println();
+	private static Sudoku backtrackingSearch (Sudoku game) {
 
 		if (game.getEmptyCases() == 0){
 			return game;
@@ -50,8 +46,6 @@ public class Solver {
 					return result;
 				}
 			}
-		}else{
-			System.out.println("bestCase is null");
 		}
 
 		return null;
