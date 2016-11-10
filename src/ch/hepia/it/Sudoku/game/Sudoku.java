@@ -23,6 +23,12 @@ public class Sudoku {
 		//TODO add exception if file is not well done
 		LineNumberReader reader = new LineNumberReader(new FileReader(filepath));
 
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
+				this.domains[i][j] = new Domain();
+			}
+		}
+
 		String line;
 		int lineCnt = 0;
 		while ((line=reader.readLine())!=null){
@@ -30,10 +36,10 @@ public class Sudoku {
 
 			for (int i = 0; i < strArray.length; i++) {
 				this.board[lineCnt][i] = strArray[i].equals("-") ? 0 : Integer.valueOf(strArray[i]);
-				this.domains[lineCnt][i] = new Domain();
-				if (this.board[lineCnt][i]!=0)
+				if (this.board[lineCnt][i]!=0){
 					emptyCases--;
-					//TODO call function domainPropagation(int line, int col)
+					addConstraint(this.board[lineCnt][i],lineCnt,i);
+				}
 			}
 			lineCnt++;
 		}
@@ -65,6 +71,15 @@ public class Sudoku {
 		return emptyCases == 0;
 	}
 
+	public void addConstraint(int value, int line, int column){
+		for (int i = 0; i < this.domains.length; i++) {
+			for (int j = 0; j < this.domains[i].length; j++) {
+				if (i == line || j == column || (i / 3 == line / 3 && j / 3 == column /3))
+					domains[i][j].remove(value);
+			}
+		}
+	}
+
 	@Override
 	public String toString () {
 		String out = "";
@@ -76,5 +91,31 @@ public class Sudoku {
 			out += i%3 == 2 ? "\n\n" : "\n";
 		}
 		return out;
+	}
+
+	public Position getMostConstrainedCase(){
+		int smallest = Integer.MAX_VALUE;
+		Position boardCase = new Position(0,0);
+		for (int i = 0; i < this.domains.length; i++) {
+			for (int j = 0; j < this.domains[i].length; j++) {
+				if (this.domains[i][j].size() < smallest && this.board[i][j] == 0){
+					boardCase.setLine(i);
+					boardCase.setColumn(j);
+					smallest = this.domains[i][j].size();
+				}
+			}
+		}
+		return boardCase;
+	}
+
+	public boolean fillCase(int line, int column, int value){
+		//TODO check if we should return the copy here, or make the copy and call this
+		this.board[line][column] = value;
+		addConstraint(value, line, column);
+		return isValid();
+	}
+
+	public Domain getDomainOfCase(int line, int column){
+		return this.domains[line][column];
 	}
 }

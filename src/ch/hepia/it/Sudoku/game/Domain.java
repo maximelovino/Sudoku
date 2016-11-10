@@ -24,6 +24,10 @@ public class Domain {
 		return this.values.contains(x);
 	}
 
+	public int size(){
+		return this.values.size();
+	}
+
 	@Override
 	public String toString () {
 		return values.toString();
