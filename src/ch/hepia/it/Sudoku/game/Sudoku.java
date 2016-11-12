@@ -20,7 +20,13 @@ public class Sudoku {
 	}
 
 	public Sudoku (Sudoku sudoku) {
-		this.board = sudoku.board;
+		//this.board = sudoku.board;
+		//TODO make profound copy of board
+		for (int i = 0; i < this.board.length; i++) {
+			for (int j = 0; j < this.board[i].length; j++) {
+				this.board[i][j] = sudoku.board[i][j];
+			}
+		}
 		this.emptyCases = sudoku.emptyCases;
 		this.domains = new Domain[SIZE][SIZE];
 		for (int i = 0; i < SIZE; i++) {
@@ -181,5 +187,9 @@ public class Sudoku {
 
 	public Domain getDomainOfCase (int line, int column) {
 		return this.domains[line][column];
+	}
+
+	public int[][] getBoard () {
+		return board;
 	}
 }
