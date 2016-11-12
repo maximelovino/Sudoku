@@ -1,7 +1,7 @@
 package ch.hepia.it.Sudoku.game;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.LineNumberReader;
 
 public class Sudoku {
@@ -30,7 +30,7 @@ public class Sudoku {
 		}
 	}
 
-	public Sudoku (String filepath) throws IOException {
+	public Sudoku (String filepath) throws FileNotFoundException, FileFormatException, InvalidSudokuException {
 		//TODO add exception if file is not well done
 		LineNumberReader reader = new LineNumberReader(new FileReader(filepath));
 
@@ -42,36 +42,87 @@ public class Sudoku {
 
 		String line;
 		int lineCnt = 0;
-		while ((line = reader.readLine()) != null) {
-			String[] strArray = line.split(" ");
-
-			for (int i = 0; i < strArray.length; i++) {
-				this.board[lineCnt][i] = strArray[i].equals("-") ? 0 : Integer.valueOf(strArray[i]);
-				if (this.board[lineCnt][i] != 0) {
-					emptyCases--;
-					addConstraint(this.board[lineCnt][i], lineCnt, i);
+		try {
+			while ((line = reader.readLine()) != null) {
+				String[] strArray = line.split(" ");
+				if (strArray.length < 9) throw new FileFormatException();
+				for (int i = 0; i < strArray.length; i++) {
+					this.board[lineCnt][i] = strArray[i].equals("-") ? 0 : Integer.valueOf(strArray[i]);
+					if (this.board[lineCnt][i] != 0) {
+						emptyCases--;
+						addConstraint(this.board[lineCnt][i], lineCnt, i);
+					}
 				}
+				lineCnt++;
 			}
-			lineCnt++;
+			reader.close();
+		} catch (Exception E) {
+			throw new FileFormatException();
 		}
-		reader.close();
-		//TODO check validity and throw exception if sudoku is not valid
+
+		if (lineCnt < 8) throw new FileFormatException();
+
+		if (!this.isValid())
+			throw new InvalidSudokuException();
 	}
 
 	public boolean isValid () {
-		return false;
+		boolean returnValue = true;
+		for (int i = 0; i < this.board.length; i++) {
+			returnValue = returnValue && this.lineCheck(i);
+			returnValue = returnValue && this.colCheck(i);
+			if (i % 3 == 0) {
+				for (int j = 0; j < this.board.length; j += 3) {
+					returnValue = returnValue && this.subArrayCheck(i, j);
+				}
+			}
+		}
+		return returnValue;
 	}
 
 	private boolean lineCheck (int line) {
-		return false;
+		Domain checkDomain = new Domain();
+		for (int j = 0; j < this.board[line].length; j++) {
+			Integer temp = this.board[line][j];
+			if (temp != 0) {
+				if (!checkDomain.contains(temp)) {
+					return false;
+				}
+				checkDomain.remove(temp);
+			}
+		}
+		return true;
 	}
 
 	private boolean colCheck (int column) {
-		return false;
+		Domain checkDomain = new Domain();
+		for (int i = 0; i < this.board.length; i++) {
+			Integer temp = this.board[i][column];
+			if (temp != 0) {
+				if (!checkDomain.contains(temp)) {
+					return false;
+				}
+				checkDomain.remove(temp);
+			}
+		}
+		return true;
 	}
 
 	private boolean subArrayCheck (int line, int column) {
-		return false;
+		Domain checkDomain = new Domain();
+
+		for (int i = line; i < line + 3; i++) {
+			for (int j = column; j < column + 3; j++) {
+				Integer temp = this.board[i][j];
+				if (temp != 0) {
+					if (!checkDomain.contains(temp)) {
+						return false;
+					}
+					checkDomain.remove(temp);
+				}
+			}
+		}
+		return true;
 	}
 
 	public int getEmptyCases () {

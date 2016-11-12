@@ -4,7 +4,6 @@ import ch.hepia.it.Sudoku.game.Domain;
 import ch.hepia.it.Sudoku.game.Position;
 import ch.hepia.it.Sudoku.game.Sudoku;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 public class Solver {
@@ -22,7 +21,7 @@ public class Solver {
 			System.out.println(solved);
 			final long endTime = System.nanoTime();
 			System.out.println(((endTime - startTime) / Math.pow(10, 9)) + " seconds to solve");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
