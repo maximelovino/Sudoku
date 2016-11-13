@@ -15,6 +15,7 @@ public class Sudoku {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
 				board[i][j] = 0;
+				this.domains[i][j] = new Domain();
 			}
 		}
 	}
@@ -37,7 +38,6 @@ public class Sudoku {
 	}
 
 	public Sudoku (String filepath) throws FileNotFoundException, FileFormatException, InvalidSudokuException {
-		//TODO add exception if file is not well done
 		LineNumberReader reader = new LineNumberReader(new FileReader(filepath));
 
 		for (int i = 0; i < SIZE; i++) {

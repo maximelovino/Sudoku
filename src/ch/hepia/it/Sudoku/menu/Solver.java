@@ -11,13 +11,17 @@ import java.util.Iterator;
 
 public class Solver {
 	private static boolean firstBestCaseOutputDone = false;
+	private static boolean solved = false;
 
 	public static void main (String[] args) {
 		try {
-			if (args.length < 1)
-				throw new RuntimeException("No path of sudoku file specified");
-			final String FILEPATH = args[0];
-			Sudoku game = new Sudoku(FILEPATH);
+			Sudoku game;
+			if (args.length < 1) {
+				game = new Sudoku();
+			} else {
+				final String FILEPATH = args[0];
+				game = new Sudoku(FILEPATH);
+			}
 
 
 			SudokuPanel panel = new SudokuPanel(game);
@@ -33,9 +37,18 @@ public class Solver {
 			solveButton.setBounds(10 + insets.left, 10 + insets.top, (int) buttonSize.getWidth(), (int) buttonSize.getHeight());
 			panel.setBounds(10 + insets.left, 10 + insets.top + 10 + (int) buttonSize.getHeight(), (int) panelPreferredSize.getWidth(), (int) panelPreferredSize.getHeight());
 			solveButton.addActionListener(e -> {
-				Sudoku solution = solve(game);
-				panel.setSudoku(solution);
-				frame.update(frame.getGraphics());
+				if (!solved) {
+					Sudoku solution = solve(game);
+					panel.setSudoku(solution);
+					frame.update(frame.getGraphics());
+					solveButton.setText("Reset");
+					solved = true;
+				} else {
+					solveButton.setText("Solve sudoku");
+					panel.setSudoku(game);
+					frame.update(frame.getGraphics());
+					solved = false;
+				}
 			});
 			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			frame.setVisible(true);

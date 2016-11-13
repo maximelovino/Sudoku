@@ -13,8 +13,11 @@ public class SudokuPanel extends JPanel {
 		super();
 		this.sudoku = sudoku;
 		this.setPreferredSize(new Dimension(780, 780));
+		//TODO always have the JTextArea[][]
 	}
 
+	//TODO add function that returns sudoku from the JTextArea, it will throw exception if false
+	//TODO launch popup when we catch exception in main
 	public void setSudoku (Sudoku sudoku) {
 		this.sudoku = sudoku;
 	}
