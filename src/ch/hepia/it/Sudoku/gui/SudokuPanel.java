@@ -5,19 +5,37 @@ import ch.hepia.it.Sudoku.game.Sudoku;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * JPanel herited class to display our sudoku
+ */
 public class SudokuPanel extends JPanel {
 	private Sudoku sudoku;
 	private final int CASE_SIZE = 80;
 
+	/**
+	 * Main constructor
+	 *
+	 * @param sudoku	The sudoku we want to display in our panel
+	 */
 	public SudokuPanel (Sudoku sudoku) {
 		super();
 		this.sudoku = sudoku;
 		this.setPreferredSize(new Dimension(780, 780));
 	}
+
+	/**
+	 * Setter for the displayed sudoku
+	 *
+	 * @param sudoku	The new sudoku
+	 */
 	public void setSudoku (Sudoku sudoku) {
 		this.sudoku = sudoku;
 	}
 
+	/**
+	 *
+	 * @param g		The graphics context
+	 */
 	@Override
 	protected void paintComponent (Graphics g) {
 		int[][] board = sudoku.getBoard();

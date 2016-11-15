@@ -58,6 +58,12 @@ public class Solver {
 
 	}
 
+	/**
+	 * Function we call to solve, will show timing as well
+	 *
+	 * @param game	The game we want to solve
+	 * @return		The solution sudoku
+	 */
 	private static Sudoku solve (Sudoku game) {
 		final long startTime = System.nanoTime();
 		System.out.println(game);
@@ -69,10 +75,14 @@ public class Solver {
 		return solved;
 	}
 
-
+	/**
+	 * Backtracking recursive solver for sudoku
+	 *
+	 * @param game	The game of sudoku we want to solve
+	 * @return		The solution sudoku
+	 */
 	private static Sudoku backtrackingSearch (Sudoku game) {
-
-		if (game.getEmptyCases() == 0) {
+		if (game.isFull()) {
 			return game;
 		}
 
