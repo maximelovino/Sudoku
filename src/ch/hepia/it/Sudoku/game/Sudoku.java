@@ -21,8 +21,6 @@ public class Sudoku {
 	}
 
 	public Sudoku (Sudoku sudoku) {
-		//this.board = sudoku.board;
-		//TODO make profound copy of board
 		for (int i = 0; i < this.board.length; i++) {
 			for (int j = 0; j < this.board[i].length; j++) {
 				this.board[i][j] = sudoku.board[i][j];
@@ -179,7 +177,6 @@ public class Sudoku {
 	}
 
 	public void fillCase (int line, int column, int value) {
-		//TODO check if we should return the copy here, or make the copy and call this
 		this.board[line][column] = value;
 		addConstraint(Integer.valueOf(value), line, column);
 		emptyCases--;
